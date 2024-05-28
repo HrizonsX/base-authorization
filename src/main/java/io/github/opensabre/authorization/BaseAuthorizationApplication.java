@@ -8,8 +8,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-public class Oauth2AuthorizationApplication {
+public class BaseAuthorizationApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Oauth2AuthorizationApplication.class, args);
+        SpringApplication.run(BaseAuthorizationApplication.class, args);
     }
 }
