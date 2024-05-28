@@ -1,6 +1,6 @@
 package io.github.opensabre.authorization.entity;
 
-import com.alibaba.nacos.shaded.com.google.common.collect.Sets;
+import com.google.common.collect.Sets;
 import io.github.opensabre.authorization.entity.form.RegisteredClientForm;
 import io.github.opensabre.authorization.entity.po.RegisteredClientPo;
 import io.github.opensabre.authorization.entity.vo.RegisteredClientVo;
@@ -33,33 +33,23 @@ public class RegisteredClientConvert {
      * @return RegisteredClient
      */
     public RegisteredClient convertToRegisteredClient(RegisteredClientPo registeredClientPo) {
-        RegisteredClient.Builder registeredClientBuilder = RegisteredClient.withId(registeredClientPo.getId())
-                .clientId(registeredClientPo.getClientId())
-                .clientSecret(registeredClientPo.getClientSecret())
-                .clientSecretExpiresAt(registeredClientPo.getClientSecretExpiresAt().toInstant())
-                .clientAuthenticationMethod(new ClientAuthenticationMethod(registeredClientPo.getClientAuthenticationMethods()))
-                .redirectUri(registeredClientPo.getRedirectUris())
-                .clientSettings(ClientSettings.withSettings(registeredClientPo.getClientSettings()).build())
-                .tokenSettings(TokenSettings.builder()
-                                // token有效期5小时
+        RegisteredClient.Builder registeredClientBuilder = RegisteredClient.withId(registeredClientPo.getId()).clientId(registeredClientPo.getClientId()).clientSecret(registeredClientPo.getClientSecret()).clientSecretExpiresAt(registeredClientPo.getClientSecretExpiresAt().toInstant()).clientAuthenticationMethod(new ClientAuthenticationMethod(registeredClientPo.getClientAuthenticationMethods())).redirectUri(registeredClientPo.getRedirectUris()).clientSettings(ClientSettings.withSettings(registeredClientPo.getClientSettings()).build()).tokenSettings(TokenSettings.builder()
+                // token有效期5小时
 //                        .accessTokenTimeToLive(registeredClientPo.getTokenSettings().getAccessTokenTimeToLive())
-                                // 使用默认JWT相关格式
-                                .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-                                // 开启刷新token
-                                .reuseRefreshTokens(true)
-                                // refreshToken有效期120分钟
+                // 使用默认JWT相关格式
+                .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
+                // 开启刷新token
+                .reuseRefreshTokens(true)
+                // refreshToken有效期120分钟
 //                        .refreshTokenTimeToLive(registeredClientPo.getTokenSettings().getRefreshTokenTimeToLive())
-                                // idToken签名算法
-                                .idTokenSignatureAlgorithm(SignatureAlgorithm.RS256).build()
-                );
+                // idToken签名算法
+                .idTokenSignatureAlgorithm(SignatureAlgorithm.RS256).build());
         //设置scope
-        Arrays.stream(StringUtils.split(registeredClientPo.getScopes(), ","))
-                .forEach(registeredClientBuilder::scope);
+        Arrays.stream(StringUtils.split(registeredClientPo.getScopes(), ",")).forEach(registeredClientBuilder::scope);
         //设置gantType
-        Arrays.stream(StringUtils.split(registeredClientPo.getAuthorizationGrantTypes(), ","))
-                .forEach(grantType -> {
-                    registeredClientBuilder.authorizationGrantType(new AuthorizationGrantType(grantType));
-                });
+        Arrays.stream(StringUtils.split(registeredClientPo.getAuthorizationGrantTypes(), ",")).forEach(grantType -> {
+            registeredClientBuilder.authorizationGrantType(new AuthorizationGrantType(grantType));
+        });
         return registeredClientBuilder.build();
     }
 
