@@ -34,5 +34,4 @@ public class Oauth2RegisteredClientRepository implements RegisteredClientReposit
     public RegisteredClient findByClientId(String clientId) {
         return registeredClientConvert.convertToRegisteredClient(oauth2RegisteredClientService.getByClientId(clientId));
     }
-
 }

@@ -34,9 +34,9 @@ public class RegisteredClientController {
     RegisteredClientConvert registeredClientConvert;
 
     @Operation(summary = "新增客户端", description = "新增客户端client")
-    @PostMapping
+    @PostMapping(value = "/add")
     public Boolean add(@Parameter(description = "新增客户端client表单", required = true) @Valid @RequestBody RegisteredClientForm registeredClientForm) {
-        log.info("disable with clientId:{}", registeredClientForm.getClientId());
+        log.info("disable with clientId: {}", registeredClientForm.getClientId());
         return oauth2RegisteredClientService.add(registeredClientConvert.convertToRegisteredClientPo(registeredClientForm));
     }
 

@@ -26,7 +26,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String uniqueId) {
-
         User user = userService.getByUniqueId(uniqueId);
         log.info("load user by username :{}", user.toString());
         return new org.springframework.security.core.userdetails.User(
@@ -47,7 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      */
     protected Set<GrantedAuthority> obtainGrantedAuthorities(User user) {
         Set<Role> roles = roleService.queryUserRolesByUserId(user.getId());
-        log.info("user:{},roles:{}", user.getUsername(), roles);
+        log.info("user:{}, roles:{}", user.getUsername(), roles);
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getCode())).collect(Collectors.toSet());
     }
 }

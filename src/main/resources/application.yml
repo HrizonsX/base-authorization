@@ -11,7 +11,7 @@ spring:
     password: ${RABBIT_MQ_PASSWORD:panda233}
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:${DATASOURCE_DBTYPE:mysql}://${DATASOURCE_HOST:localhost}:${DATASOURCE_PORT:3306}/os_base_auth?characterEncoding=UTF-8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:${DATASOURCE_DBTYPE:mysql}://${DATASOURCE_HOST:localhost}:${DATASOURCE_PORT:3306}/os_base_organization?characterEncoding=UTF-8&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true
     username: ${DATASOURCE_USERNAME:root}
     password: ${DATASOURCE_PASSWORD:panda233}
     hikari:
@@ -57,10 +57,19 @@ management:
 logging:
   level:
     org.springframework.web: debug
-    org.springframework.security: DEBUG
+    org.springframework.security: debug
+    com.netflix.discovery: error
+    org.springframework: error
+    org.springframework.cloud: error
+    org.springframework.cloud.netflix.eureka: error
     org.apache.ibatis: debug
+    org.apache: error
+    org.mybatis.spring.SqlSessionFactoryBean: warn
+    org.mybatis.spring.mapper.ClassPathMapperScanner: warn
     io.github.xpp: debug
     java.sql.PreparedStatement: debug
+    java.sql.Connection: debug
+    java.sql.Statement: debug
   logback:
     rollingpolicy:
       max-file-size: 1GB
@@ -74,4 +83,3 @@ mybatis-plus:
     db-config:
       logic-delete-value: "Y" # 逻辑已删除值(默认为 Y)
       logic-not-delete-value: "N" # 逻辑未删除值(默认为 N)
-      table-prefix: oauth2_

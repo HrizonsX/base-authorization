@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import javax.annotation.Resource;
 
+
 @Slf4j
 @Configuration
 @EnableWebSecurity
@@ -19,7 +20,7 @@ import javax.annotation.Resource;
 public class WebSecurityConfig {
 
     @Resource
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     /**
      * 用于身份验证的 Spring Security 过滤器链
@@ -31,13 +32,11 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
         log.info("Init HttpSecurity for Security");
-        httpSecurity.csrf().disable();
         httpSecurity.authorizeRequests()
                 .antMatchers("/client", "/client/**").permitAll()
                 .anyRequest().authenticated();
-        //表单登录处理从授权服务器过滤器链
-        httpSecurity.formLogin(Customizer.withDefaults())
-                .userDetailsService(userDetailsService);
+        // 表单登录处理从授权服务器过滤器链
+        httpSecurity.formLogin(Customizer.withDefaults()).userDetailsService(userDetailsService);
         return httpSecurity.build();
     }
 }
