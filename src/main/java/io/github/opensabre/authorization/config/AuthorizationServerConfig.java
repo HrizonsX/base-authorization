@@ -5,10 +5,14 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import io.github.opensabre.authorization.entity.Role;
+import io.github.opensabre.authorization.entity.User;
 import io.github.opensabre.authorization.oauth2.OAuth2AuthenticationUtils;
 import io.github.opensabre.authorization.oauth2.OAuth2PasswordAuthenticationConverter;
 import io.github.opensabre.authorization.oauth2.OAuth2PasswordAuthenticationProvider;
 import io.github.opensabre.authorization.oauth2.Oauth2RegisteredClientRepository;
+import io.github.opensabre.authorization.service.IRoleService;
+import io.github.opensabre.authorization.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,9 +46,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Configuration
@@ -58,6 +60,12 @@ public class AuthorizationServerConfig {
 
     @Resource
     private UserDetailsService userDetailsService;
+
+    @Resource
+    private IRoleService roleService;
+
+    @Resource
+    private IUserService userService;
 
     /**
      * 用于密码加密
@@ -88,7 +96,6 @@ public class AuthorizationServerConfig {
     /**
      * token生成
      *
-     * @return
      */
     @Bean
     public OAuth2TokenGenerator<?> tokenGenerator() {
@@ -102,17 +109,20 @@ public class AuthorizationServerConfig {
     /**
      * 自定义JWT token内容
      *
-     * @return
      */
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
         return context -> {
             JwsHeader.Builder headers = context.getHeaders();
-            headers.header("abc", "123456");
+            headers.header("source", "oauth2");
             JwtClaimsSet.Builder claims = context.getClaims();
-            claims.claim("roles", "abcd");
             Map<String, Object> map = claims.build().getClaims();
-            //map.put("custom", "abc");
+            String uniqueId = (String) map.get(JwtClaimNames.SUB);
+            User user = userService.getByUniqueId(uniqueId);
+            if (Objects.nonNull(user)) {
+                Set<Role> result = roleService.queryUserRolesByUserId(user.getId());
+                claims.claim("roles", result);
+            }
             log.info("context:{}", context);
         };
     }
