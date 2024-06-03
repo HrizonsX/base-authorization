@@ -1,5 +1,7 @@
 package io.github.opensabre.authorization.config;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -67,6 +69,8 @@ public class AuthorizationServerConfig {
     @Resource
     private IUserService userService;
 
+    public static final String X_CLIENT_TOKEN_USER = "x-client-token-user";
+
     /**
      * 用于密码加密
      *
@@ -119,11 +123,16 @@ public class AuthorizationServerConfig {
             Map<String, Object> map = claims.build().getClaims();
             String uniqueId = (String) map.get(JwtClaimNames.SUB);
             User user = userService.getByUniqueId(uniqueId);
+            try {
+                headers.header(X_CLIENT_TOKEN_USER, new ObjectMapper().writeValueAsString(user));
+            } catch (JsonProcessingException e) {
+                log.error("往 header 写入用户信息失败", e);
+            }
             if (Objects.nonNull(user)) {
                 Set<Role> result = roleService.queryUserRolesByUserId(user.getId());
                 claims.claim("roles", result);
             }
-            log.info("context:{}", context);
+            log.info("context: {}", context);
         };
     }
 
