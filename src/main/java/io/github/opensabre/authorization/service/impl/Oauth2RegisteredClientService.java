@@ -27,19 +27,17 @@ public class Oauth2RegisteredClientService extends ServiceImpl<RegisteredClientM
 
     @Override
     public boolean add(RegisteredClientPo registeredClientPo) {
-        //密码不为空，表示重新设置了密码，保存密码
+        // 密码不为空，表示重新设置了密码，需要保存密码
         if (StringUtils.isNotBlank(registeredClientPo.getClientSecret()))
             registeredClientPo.setClientSecret(passwordEncoder.encode(registeredClientPo.getClientSecret()));
-        //保存
         return this.save(registeredClientPo);
     }
 
     @Override
     public boolean update(RegisteredClientPo registeredClientPo) {
-        //密码不为空，表示重新设置了密码，保存密码
+        // 密码不为空，表示重新设置了密码，需要更新密码
         if (StringUtils.isNotBlank(registeredClientPo.getClientSecret()))
             registeredClientPo.setClientSecret(passwordEncoder.encode(registeredClientPo.getClientSecret()));
-        //更新
         return this.updateById(registeredClientPo);
     }
 
@@ -48,7 +46,7 @@ public class Oauth2RegisteredClientService extends ServiceImpl<RegisteredClientM
         QueryWrapper<RegisteredClientPo> queryWrapper = registeredClientQueryParam.build();
         queryWrapper.eq(StringUtils.isNotBlank(registeredClientQueryParam.getClientId()), "client_id", registeredClientQueryParam.getClientId());
         queryWrapper.eq(StringUtils.isNotBlank(registeredClientQueryParam.getClientName()), "client_name", registeredClientQueryParam.getClientName());
-        IPage<RegisteredClientPo> iPage = this.page(page, queryWrapper);
+        IPage<RegisteredClientPo> iPage = page(page, queryWrapper);
         return iPage.convert(registeredClientConvert::convertToRegisteredClientVo);
     }
 

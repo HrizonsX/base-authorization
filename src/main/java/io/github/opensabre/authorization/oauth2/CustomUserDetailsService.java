@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,7 +29,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String uniqueId) {
         User user = userService.getByUniqueId(uniqueId);
-        log.info("load user by username :{}", user.toString());
+        if (Objects.isNull(user)) {
+            return null;
+        }
+        log.info("load oauth user. username: {}", user.getUsername());
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
@@ -45,8 +50,11 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @return 权限集合
      */
     protected Set<GrantedAuthority> obtainGrantedAuthorities(User user) {
+        if (Objects.isNull(user)) {
+            return Collections.emptySet();
+        }
         Set<Role> roles = roleService.queryUserRolesByUserId(user.getId());
-        log.info("user:{}, roles:{}", user.getUsername(), roles);
+        log.info("username: {}, roles: {}", user.getUsername(), roles);
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getCode())).collect(Collectors.toSet());
     }
 }

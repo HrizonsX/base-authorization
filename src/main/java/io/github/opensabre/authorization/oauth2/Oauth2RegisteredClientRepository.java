@@ -22,7 +22,7 @@ public class Oauth2RegisteredClientRepository implements RegisteredClientReposit
     @Deprecated
     @Override
     public void save(RegisteredClient registeredClient) {
-        log.warn("请使用IOauth2RegisteredClientService相关方法，该实现废弃！");
+        log.warn("请使用IOauth2RegisteredClientService相关方法，该实现已废弃");
     }
 
     @Override

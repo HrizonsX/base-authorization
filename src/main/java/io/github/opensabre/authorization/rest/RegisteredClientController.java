@@ -49,8 +49,7 @@ public class RegisteredClientController {
 
     @Operation(summary = "修改客户端", description = "修改指定客户端信息")
     @PutMapping(value = "/{id}")
-    public Boolean update(@Parameter(description = "客户端ID", required = true) @PathVariable String id,
-                          @Parameter(description = "客户端实体", required = true) @Valid @RequestBody RegisteredClientForm registeredClientForm) {
+    public Boolean update(@Parameter(description = "客户端ID", required = true) @PathVariable String id, @Parameter(description = "客户端实体", required = true) @Valid @RequestBody RegisteredClientForm registeredClientForm) {
         log.info("update with id:{}", id);
         return oauth2RegisteredClientService.update(registeredClientConvert.convertToRegisteredClientPo(registeredClientForm));
     }
@@ -63,9 +62,7 @@ public class RegisteredClientController {
     }
 
     @Operation(summary = "根据clientId获客户端信息", description = "根据clientId获客户端信息")
-    @ApiResponses(
-            @ApiResponse(responseCode = "200", description = "处理成功", content = @Content(schema = @Schema(implementation = Result.class)))
-    )
+    @ApiResponses(@ApiResponse(responseCode = "200", description = "处理成功", content = @Content(schema = @Schema(implementation = Result.class))))
     @GetMapping
     public RegisteredClientVo query(@Parameter(description = "客户端clientId", required = true) @RequestParam String clientId) {
         log.info("query with clientId:{}", clientId);
@@ -73,9 +70,7 @@ public class RegisteredClientController {
     }
 
     @Operation(summary = "搜索客户端", description = "根据条件查询客户端信息")
-    @ApiResponses(
-            @ApiResponse(responseCode = "200", description = "处理成功", content = @Content(schema = @Schema(implementation = Result.class)))
-    )
+    @ApiResponses(@ApiResponse(responseCode = "200", description = "处理成功", content = @Content(schema = @Schema(implementation = Result.class))))
     @PostMapping(value = "/conditions")
     public IPage<RegisteredClientVo> search(@Parameter(description = "客户端查询参数", required = true) @Valid @RequestBody RegisteredClientQueryForm registeredClientQueryForm) {
         log.info("search with registeredClientQueryForm:{}", registeredClientQueryForm);

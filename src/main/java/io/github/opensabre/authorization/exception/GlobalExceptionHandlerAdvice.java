@@ -13,7 +13,7 @@ public class GlobalExceptionHandlerAdvice extends DefaultGlobalExceptionHandlerA
 
     @ExceptionHandler(value = {InternalAuthenticationServiceException.class})
     public Result internalAuthenticationServiceException(InternalAuthenticationServiceException ex) {
-        log.error("load user by username exception:{}", ex.getMessage());
+        log.error("authentication service exception: {}", ex.getMessage());
         return Result.fail(AuthErrorType.UNAUTHORIZED_CLIENT);
     }
 }

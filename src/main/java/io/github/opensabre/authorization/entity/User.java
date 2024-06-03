@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 @Data
-@EqualsAndHashCode(callSuper = false )
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @TableName(value = "base_org_user", autoResultMap = true)
 public class User extends BasePo {

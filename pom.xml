@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>base-authorization</name>
-    <description>Demo Oauth2 project for Spring Cloud Oauth2 Authorization Server</description>
+    <description>Spring Cloud Oauth2 Authorization Server</description>
 
     <parent>
         <artifactId>opensabre-base-dependencies</artifactId>
@@ -96,12 +96,13 @@
             <version>0.16.0</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-cas</artifactId>
+        </dependency>
+        <!--eureka依赖-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
     </dependencies>
 

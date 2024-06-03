@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 public enum AuthErrorType implements ErrorType {
-
     INVALID_REQUEST("040001", "无效请求"),
     INVALID_CLIENT("040002", "无效client_id"),
     INVALID_GRANT("040003", "无效授权"),
@@ -34,5 +33,4 @@ public enum AuthErrorType implements ErrorType {
         this.code = code;
         this.mesg = mesg;
     }
-
 }

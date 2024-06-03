@@ -28,11 +28,15 @@ import java.util.*;
 @Slf4j
 public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvider {
 
-    // 这部分代码和OAuth2ClientCredentialsAuthenticationProvider类似，只是添加了AuthenticationManager
+    /**
+     * 这部分代码和OAuth2ClientCredentialsAuthenticationProvider类似，只是添加了AuthenticationManager
+     */
     private static final String ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-5.2";
     private static final OAuth2TokenType ID_TOKEN_TOKEN_TYPE = new OAuth2TokenType(OidcParameterNames.ID_TOKEN);
 
-    // 密码模式需要 AuthenticationManager
+    /**
+     * 密码模式需要 AuthenticationManager
+     */
     private final AuthenticationManager authenticationManager;
     private final OAuth2AuthorizationService authorizationService;
     private final OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
@@ -57,7 +61,9 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
         this.tokenGenerator = tokenGenerator;
     }
 
-    // 此方法实现和OAuth2AuthorizationCodeAuthenticationProvider类似，照猫画虎而已。
+    /**
+     * 此方法实现和OAuth2AuthorizationCodeAuthenticationProvider类似
+     */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
@@ -87,7 +93,6 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
             authorizedScopes = new LinkedHashSet<>(scopes);
         }
 
-        // @formatter:off
         DefaultOAuth2TokenContext.Builder tokenContextBuilder = DefaultOAuth2TokenContext.builder()
                 .registeredClient(registeredClient)
                 .principal(usernamePasswordAuthentication)
@@ -96,7 +101,6 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
                 .tokenType(OAuth2TokenType.ACCESS_TOKEN)
                 .authorizationGrantType(AuthorizationGrantType.PASSWORD)
                 .authorizationGrant(passwordAuthentication);
-        // @formatter:on
 
         // ----- Access token -----
         OAuth2TokenContext tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.ACCESS_TOKEN).build();
@@ -115,14 +119,12 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
                 generatedAccessToken.getTokenValue(), generatedAccessToken.getIssuedAt(),
                 generatedAccessToken.getExpiresAt(), tokenContext.getAuthorizedScopes());
 
-        // @formatter:off
         OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization.withRegisteredClient(registeredClient)
                 .principalName(usernamePasswordAuthentication.getName())
                 .authorizationGrantType(AuthorizationGrantType.PASSWORD)
                 .attribute(OAuth2Authorization.AUTHORIZED_SCOPE_ATTRIBUTE_NAME, authorizedScopes)
                 .attribute(Principal.class.getName(), usernamePasswordAuthentication);
 
-        // @formatter:on
         if (generatedAccessToken instanceof ClaimAccessor) {
             authorizationBuilder.token(accessToken, (metadata) ->
                     metadata.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME, ((ClaimAccessor) generatedAccessToken).getClaims()));
@@ -135,7 +137,6 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
         if (registeredClient.getAuthorizationGrantTypes().contains(AuthorizationGrantType.REFRESH_TOKEN) &&
                 // Do not issue refresh token to public client
                 !clientPrincipal.getClientAuthenticationMethod().equals(ClientAuthenticationMethod.NONE)) {
-
             tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.REFRESH_TOKEN).build();
             OAuth2Token generatedRefreshToken = this.tokenGenerator.generate(tokenContext);
             if (!(generatedRefreshToken instanceof OAuth2RefreshToken)) {
@@ -154,12 +155,11 @@ public class OAuth2PasswordAuthenticationProvider implements AuthenticationProvi
         // ----- ID token -----
         OidcIdToken idToken;
         if (scopes.contains(OidcScopes.OPENID)) {
-            // @formatter:off
             tokenContext = tokenContextBuilder
                     .tokenType(ID_TOKEN_TOKEN_TYPE)
-                    .authorization(authorizationBuilder.build())	// ID token customizer may need access to the access token and/or refresh token
+                    // ID token customizer may need access to the access token and/or refresh token
+                    .authorization(authorizationBuilder.build())
                     .build();
-            // @formatter:on
             OAuth2Token generatedIdToken = this.tokenGenerator.generate(tokenContext);
             if (!(generatedIdToken instanceof Jwt)) {
                 OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR,

@@ -30,7 +30,7 @@ import java.util.Map;
 
 /**
  * Utility methods for the OAuth 2.0 {@link AuthenticationProvider}'s.
- * 从 OAuth2AuthenticationProviderUtils 复制部分而来，因为它不是public级别，自定义密码模式无法访问
+ * 从 OAuth2AuthenticationProviderUtils 复制而来，因为它不是public级别，自定义密码模式无法访问
  */
 public final class OAuth2AuthenticationUtils {
 

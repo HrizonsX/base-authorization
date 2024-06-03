@@ -7,7 +7,7 @@ import io.github.opensabre.common.core.entity.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Set;
 
 @Slf4j
@@ -23,6 +23,6 @@ public class OrganizationProviderFallback implements OrganizationProvider {
     @Override
     public ExdResult<Set<Role>> queryRolesByUserId(String userId) {
         log.warn("queryRolesByUserId downgrade");
-        return (ExdResult) Result.success(new HashSet<Role>());
+        return (ExdResult) Result.success(Collections.emptySet());
     }
 }

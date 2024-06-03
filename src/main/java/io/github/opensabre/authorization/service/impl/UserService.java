@@ -26,7 +26,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
         if (Objects.isNull(user)) {
             return new User();
         }
-        //查询用户与角色关系信息
+        // 查询用户与角色关系信息
         user.setRoleIds(userRoleService.queryByUserId(user.getId()));
         return user;
     }

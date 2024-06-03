@@ -99,7 +99,6 @@ public class AuthorizationServerConfig {
 
     /**
      * token生成
-     *
      */
     @Bean
     public OAuth2TokenGenerator<?> tokenGenerator() {
@@ -112,7 +111,6 @@ public class AuthorizationServerConfig {
 
     /**
      * 自定义JWT token内容
-     *
      */
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
@@ -167,7 +165,7 @@ public class AuthorizationServerConfig {
                 )
         );
 
-        //注入新的AuthenticationManager
+        // 注入新的AuthenticationManager
         httpSecurity.authenticationManager(authenticationManager(httpSecurity));
         addOAuth2PasswordAuthenticationProvider(httpSecurity);
         // 表单登录处理 从授权服务器过滤器链

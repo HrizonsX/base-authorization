@@ -78,6 +78,7 @@ Content-Type: application/x-www-form-urlencoded
 
 username=zhoutaoo&password=password
 ```
+
 响应报文
 
 ```
@@ -106,6 +107,7 @@ Host: localhost:8000
 Authorization: Basic dGVzdF9jbGllbnQ6dGVzdF9zZWNyZXQ=
 Cache-Control: no-cache
 ```
+
 响应报文
 
 ```
@@ -148,7 +150,6 @@ redirect_uri： 该参数要与商户申请client_id时登记的url(oauth_client
 
 ![postman](../../docs/auth/oauth2_authorization_code_url.png)
 
-
 **第二步：根据url上带的code获取用户的access_token**
 
 ![postman](../../docs/auth/oauth2_authorization_code.png)
@@ -161,6 +162,7 @@ Host: localhost:8000
 Authorization: Basic dGVzdF9jbGllbnQ6dGVzdF9zZWNyZXQ=
 Cache-Control: no-cache
 ```
+
 响应报文
 
 ```
@@ -189,6 +191,7 @@ Authorization: Basic dGVzdF9jbGllbnQ6dGVzdF9zZWNyZXQ=
 Cache-Control: no-cache
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 ```
+
 响应报文
 
 ```
@@ -219,6 +222,7 @@ Content-Type: application/x-www-form-urlencoded
 
 username=15619841xxxx&password=123456&client_id=test_client&client_secret=test_secret&scope=read&grant_type=mobile
 ```
+
 响应报文
 
 ```

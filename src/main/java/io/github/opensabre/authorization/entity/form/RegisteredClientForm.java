@@ -43,6 +43,7 @@ public class RegisteredClientForm extends BaseForm<RegisteredClientPo> {
     @Schema(title = "授权范围")
     Set<String> scopes;
 
+    @NotEmpty(message = "回调URL不能为空", groups = Create.class)
     @Schema(title = "回调URL，多个信任回调地址以\",\"间隔")
     String redirectUri;
 

@@ -21,7 +21,7 @@ public class RoleService extends ServiceImpl<RoleMapper, Role> implements IRoleS
     public Set<Role> queryUserRolesByUserId(String userId) {
         Set<String> roleIds = userRoleService.queryByUserId(userId);
         Set<Role> roles = new HashSet<>();
-        roles.addAll(this.listByIds(roleIds));
+        roles.addAll(listByIds(roleIds));
         return roles;
     }
 }

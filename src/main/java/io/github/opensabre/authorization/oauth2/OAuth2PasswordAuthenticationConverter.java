@@ -14,13 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
- * {@link  OAuth2ClientCredentialsAuthenticationConverter}
+ * 密码模式
+ * {@link OAuth2ClientCredentialsAuthenticationConverter}
  **/
 public class OAuth2PasswordAuthenticationConverter implements AuthenticationConverter {
 
     @Override
     public Authentication convert(HttpServletRequest request) {
-
         // grant_type (REQUIRED)
         String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
         if (!AuthorizationGrantType.PASSWORD.getValue().equals(grantType)) {
